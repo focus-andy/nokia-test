@@ -60,9 +60,12 @@ class Inbound(threading.Thread):
 
 		input_list = []
 		for line in all_text:
-			inbound_data = json.loads( line.strip() ) 
-			events_num = self.get_event_num( inbound_data )
-			input_list.append(events_num)
+			try:
+				inbound_data = json.loads( line.strip() ) 
+				events_num = self.get_event_num( inbound_data )
+				input_list.append(events_num)
+			except Exception:
+				sys.stderr.write( '[ERROR]: load json failed! %s' %s (line) )
 
 		#sort
 		input_list.sort(lambda x,y:cmp(x[1],y[1]), reverse=True)
