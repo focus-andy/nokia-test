@@ -1,0 +1,4 @@
+{"data": {"type": "import", "value": 30}, "deviceid": "xyz"}
+{"data": {"type": "export", "value": 56}, "deviceid": "abc"}
+{"data": {"type": "export", "value": 78}, "deviceid": "abc"}
+{"data": {"type": "communicate", "value": 93}, "deviceid": "abc"}
