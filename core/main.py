@@ -17,7 +17,12 @@ if __name__ == "__main__":
 
 	#STEP 2, initialise profile dictiornay by loading the device profile
 	gvar.profile_dict = gvar.thread_profile.load_profile()
-	sys.stdout.write( '[TRACE]: load the device profile\n')
+	if gvar.profile_dict != False:
+		sys.stdout.write( '[TRACE]: load the device profile\n')
+	else:
+		gvar.thread_profile.stop()
+		gvar.thread_inbound.stop()
+		sys.exit()
 
 	try:
 	#STEP 3, run profile thread for updating profile automatically

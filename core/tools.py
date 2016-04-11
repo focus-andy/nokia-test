@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+import sys
 
 def load_file( filename = '' ):
 	if not os.path.isfile( filename ):

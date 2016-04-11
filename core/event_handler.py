@@ -14,6 +14,7 @@ class EventHandler(ProcessEvent):
 		gvar.thread_inbound.detect_anomaly(event.name)
 	def process_IN_MODIFY(self, event):
 		sys.stdout.write( "[INFO]: find modified file: %s\n" % os.path.join(event.path,event.name) )
-#		global profile_dict 
-		gvar.profile_dict = gvar.thread_profile.load_profile()
+		tmp_dict = gvar.thread_profile.load_profile()
+		if tmp_dict != False:
+			gvar.profile_dict = tmp_dict
 	

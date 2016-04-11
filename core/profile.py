@@ -36,15 +36,22 @@ class Profile(threading.Thread):
 	def load_profile(self):
 		all_text = load_file( self.path )
 		if all_text == False:
-			sys.stderr.write( "[ERROR]: load profile failed!" )
+			sys.stderr.write( "[ERROR]: load profile failed!\n" )
 			return False
 		#load all the contents into tempory dictionary
 		profile_dict = {}
 		for line in all_text:
-			profile = json.loads( line.strip() )
-			profile_dict[profile['type']] = {'thresholds': profile['thresholds'],
-											'window':profile['window']}
-		sys.stdout.write( '[INFO]: load the device profile successfully!\n')
-		return profile_dict
+			try:
+				profile = json.loads( line.strip() )
+				profile_dict[profile['type']] = {'thresholds': profile['thresholds'],
+												'window':profile['window']}
+			except Exception:
+				sys.stderr.write( "[ERROR] load json failed! %s\n" % (line))
+		if len(profile_dict) > 0:
+			sys.stdout.write( '[INFO]: load the device profile successfully!\n')
+			return profile_dict
+		else:
+			sys.stderr.write( '[ERROR]: load device profile failed!\n')
+			return False
 
 
