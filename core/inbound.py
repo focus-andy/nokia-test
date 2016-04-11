@@ -61,7 +61,7 @@ class Inbound(threading.Thread):
 		input_list.sort(lambda x,y:cmp(x[1],y[1]), reverse=True)
 
 		#write result to file
-		f_write = open( self.output_path + filename, 'a' )
+		f_write = open( self.output_path + 'res.'+ filename, 'a' )
 		for item in input_list:
 			f_write.write('%s,%s\n' % (item[0], item[1]) )
 		f_write.close()
