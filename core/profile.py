@@ -8,6 +8,9 @@ from event_handler import EventHandler
 from pyinotify import WatchManager, Notifier, \
 ProcessEvent, IN_CREATE,IN_MODIFY
 
+'''
+Class Profile for the device profile
+'''
 class Profile(threading.Thread): 
 	def __init__(self, path):
 		threading.Thread.__init__(self)  
@@ -16,6 +19,7 @@ class Profile(threading.Thread):
 		self.wm = WatchManager()
 		self.notifier = Notifier(self.wm, EventHandler())
 
+	'''Rewrite the threading's function run(); Create notifier to detect the modification events of device profile'''
 	def run(self): 
 		self.wm.add_watch(self.path, IN_MODIFY, rec=True)
 		while not self.thread_stop:  
@@ -28,6 +32,7 @@ class Profile(threading.Thread):
 		self.notifier.stop()
 		self.thread_stop = True
 
+	'''Load the device profile file into dictionary variable'''
 	def load_profile(self):
 		all_text = load_file( self.path )
 		if all_text == False:

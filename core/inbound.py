@@ -10,6 +10,9 @@ import gvar
 from pyinotify import  WatchManager, Notifier, \
 ProcessEvent, IN_CREATE,IN_MODIFY
 
+'''
+Class Inbound wraps all the functions for detecting anomalies in input files.
+'''
 class Inbound(threading.Thread): 
 	def __init__(self, input_path, output_path):
 		threading.Thread.__init__(self)  
@@ -18,7 +21,7 @@ class Inbound(threading.Thread):
 		self.thread_stop = False 
 		self.wm = WatchManager()
 		self.notifier = Notifier(self.wm, EventHandler())
-
+	'''Rewrite the class threading's function run, it's for detecting the new input files '''
 	def run(self): 
 		self.wm.add_watch(self.input_path, IN_CREATE, rec=True)
 		while not self.thread_stop:  
@@ -33,19 +36,23 @@ class Inbound(threading.Thread):
 		self.notifier.stop()
 		self.thread_stop = True
 
+	'''deal with the historical input files'''
 	def detect_historical_anomaly(self):
 		history_file_list = []
 		new_file_list= os.listdir(self.input_path)
 		ret = list( set(history_file_list) ^ set(new_file_list) )
-		while len(ret) > 0:
+		while len(ret) > 0:#No new input files generated before the function returns
+			#deal with historical input files one by one
 			for item in ret:
 				self.detect_anomaly( ''.join(item) )
 			history_file_list = new_file_list
 			new_file_list= os.listdir(self.input_path)
 			ret = list( set(history_file_list) ^ set(new_file_list) )
 			
+	'''deal with one input file'''
 	def detect_anomaly( self, filename = '' ):
 		sys.stdout.write( '[INFO]: start detecting file:%s\n' % (filename) )
+		#load file
 		all_text = load_file( self.input_path+filename )
 		if all_text == False:
 			sys.stderr.write( "[ERROR]: load input file failed!" )
@@ -65,8 +72,9 @@ class Inbound(threading.Thread):
 		for item in input_list:
 			f_write.write('%s,%s\n' % (item[0], item[1]) )
 		f_write.close()
-		sys.stdout.write( '[INFO]: done. write result into file:%s\n' % (self.output_path + filename))
+		sys.stdout.write( '[INFO]: done. write result into path:%s\n' % (self.output_path))
 
+	'''Calculate how many events can be generated for one input data'''
 	def get_event_num( self, inbound_data ):
 		profile_dict = gvar.profile_dict
 		d_id = inbound_data['deviceid']

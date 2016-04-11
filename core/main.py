@@ -1,18 +1,11 @@
 #! /usr/bin/python
 # encoding:utf-8
 
-import os
 import sys
-import json
 import time
-import threading
-from tools import load_file
-from event_handler import EventHandler
 from profile import Profile
 from inbound import Inbound
 import gvar
-from pyinotify import  WatchManager, Notifier, \
-ProcessEvent, IN_CREATE,IN_MODIFY
 
 
 if __name__ == "__main__":

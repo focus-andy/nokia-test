@@ -5,6 +5,9 @@ import gvar
 from pyinotify import  WatchManager, Notifier, \
 ProcessEvent, IN_CREATE,IN_MODIFY
 
+'''
+Class EventHandler defines the functions to deal with different file behaviours
+'''
 class EventHandler(ProcessEvent):
 	def process_IN_CREATE(self, event):
 		sys.stdout.write( "[INFO]: find new file: %s\n" % os.path.join(event.path,event.name) )
